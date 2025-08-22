@@ -1,24 +1,36 @@
 package web.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.util.Objects;
 
 @Entity
+@Table(name = "user")
 public class User {
 
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
     private int id;
+    @Column(name = "name")
     private String name;
+    @Column(name = "surname")
+    private String surname;
+    @Column(name = "age")
     private int age;
+    @Column(name = "email")
     private String email;
 
     public User() {
     }
 
-    public User(int id, String name, int age, String email) {
-        this.id = id;
+    public User(String name, String surname, int age, String email) {
         this.name = name;
+        this.surname = surname;
         this.age = age;
         this.email = email;
     }
@@ -39,6 +51,14 @@ public class User {
         this.name = name;
     }
 
+    public String getSurname() {
+        return surname;
+    }
+
+    public void setSurname(String surname) {
+        this.surname = surname;
+    }
+
     public int getAge() {
         return age;
     }
@@ -56,25 +76,27 @@ public class User {
     }
 
     @Override
-    public String toString() {
-        return "User{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", age=" + age +
-                ", email='" + email + '\'' +
-                '}';
-    }
-
-    @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return id == user.id && age == user.age && Objects.equals(name, user.name) && Objects.equals(email, user.email);
+        return id == user.id && age == user.age && Objects.equals(name, user.name)
+                && Objects.equals(surname, user.surname) && Objects.equals(email, user.email);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, name, age, email);
+        return Objects.hash(id, name, surname, age, email);
+    }
+
+    @Override
+    public String toString() {
+        return "User {" +
+                " id=" + id +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", email=' " + email + '\'' +
+                '}';
     }
 }
