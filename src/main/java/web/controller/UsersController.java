@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -14,7 +15,7 @@ import web.service.UserService;
 @RequestMapping("/users")
 public class UsersController {
 
-    UserService userService;
+    private UserService userService;
 
     @Autowired
     public UsersController(UserService userService) {
@@ -33,18 +34,7 @@ public class UsersController {
 
     }
     @PostMapping
-    public String createUser(@RequestParam(name = "name") String name,
-                             @RequestParam(name = "surname") String surname,
-                             @RequestParam(name = "age") int age,
-                             @RequestParam(name = "email") String email,
-                             Model model) {
-        User user = new User();
-
-        user.setName(name);
-        user.setSurname(surname);
-        user.setAge(age);
-        user.setEmail(email);
-        model.addAttribute("user", user);
+    public String createUser(@ModelAttribute User user) {
         userService.addUser(user);
         return "redirect:/users";
     }
@@ -57,16 +47,7 @@ public class UsersController {
     }
 
     @PostMapping("/update")
-    public String update(@RequestParam(name = "id") int id,
-                         @RequestParam(name = "name") String name,
-                         @RequestParam(name = "surname") String surname,
-                         @RequestParam(name = "age") int age,
-                         @RequestParam(name = "email") String email) {
-        User user = userService.getUserById(id);
-        user.setName(name);
-        user.setSurname(surname);
-        user.setAge(age);
-        user.setEmail(email);
+    public String update(@ModelAttribute User user) {
         userService.updateUser(user);
         return "redirect:/users";
     }
